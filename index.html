@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yatra.AI - Premium Travel Destinations</title>
+    <!-- Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <section id="home">
+        <!-- Background Carousel Images -->
+        <div class="bg-layer active" id="bg-0"
+            style="background-image: url('https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');">
+        </div>
+        <div class="bg-layer" id="bg-1"
+            style="background-image: url('https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');">
+        </div>
+        <div class="bg-layer" id="bg-2"
+            style="background-image: url('https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');">
+        </div>
+        <div class="bg-layer" id="bg-3"
+            style="background-image: url('https://images.unsplash.com/photo-1477587458883-47145ed94245?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');">
+        </div>
+        <div class="bg-layer" id="bg-4"
+            style="background-image: url('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');">
+        </div>
+        <div class="bg-gradient-overlay"></div>
+
+        <!-- Main Container -->
+        <div class="container">
+
+            <!-- Header / Navigation -->
+            <header>
+                <div class="logo">
+                    <img src="yatralogo.jpg" alt="Yatra.AI Logo" class="brand-logo">
+                    <span>Yatra.AI</span>
+                </div>
+
+                <nav>
+                    <ul class="nav-links">
+                    <li><a href="/index.html" class="active">HOME</a></li>
+                    <li><a href="/holidays.html">HOLIDAYS</a></li>
+                    <li><a href="/chat.html">AI AGENT</a></li>
+                    <li><a href="/companion.html">TRAVEL COMPANION</a></li>
+                    <li><a href="/dashboard.html">CHAT HISTORY</a></li>
+                </ul>
+                </nav>
+
+                <div class="nav-icons">
+                    <button class="icon-btn search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <a href="/signin.html"><button class="icon-btn user-btn"><i
+                                class="fa-solid fa-user"></i></button></a>
+                </div>
+            </header>
+
+            <!-- Main Content Layout -->
+            <main>
+                <!-- Left Side: Hero Text -->
+                <div class="hero-content">
+                    <div class="location-subtitle">
+                        <span class="line-indicator"></span>
+                        <span id="hero-subtitle">Agra - Uttar Pradesh</span>
+                    </div>
+                    <!-- Adding an ID and separating the lines to mirror the visual -->
+                    <h1 class="hero-title">
+                        <span class="title-line1" id="hero-title1">TAJ</span>
+                        <br>
+                        <span class="title-line2" id="hero-title2">MAHAL</span>
+                    </h1>
+
+                    <p class="hero-description" id="hero-desc">
+                        An immense mausoleum of white marble, built in Agra by Mughal emperor Shah Jahan. It is one of
+                        the universally admired masterpieces of the world's heritage and a symbol of India's rich
+                        history.
+                    </p>
+
+                    <div class="hero-actions">
+                        <button class="btn-play"><i class="fa-solid fa-pause"></i></button>
+                        <a href="/holidays.html"><button class="btn-discover">DISCOVER LOCATION</button></a>
+                    </div>
+                </div>
+
+                <!-- Right Side: Destination Cards Carousel -->
+                <div class="cards-wrapper">
+                    <div class="cards-track" id="cardsTrack">
+
+                        <!-- Card 1 (Active equivalent) -->
+                        <div class="card" data-index="0"
+                            style="background-image: url('https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&w=400&q=80'); display: none;">
+                            <div class="card-overlay">
+                                <div class="card-content">
+                                    <span class="card-subtitle"><span class="line-indicator small"></span>Agra - Uttar
+                                        Pradesh</span>
+                                    <h3 class="card-title">TAJ<br>MAHAL</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="card active" data-index="1"
+                            style="background-image: url('https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?ixlib=rb-4.0.3&w=400&q=80');">
+                            <div class="card-overlay">
+                                <div class="card-content">
+                                    <span class="card-subtitle"><span class="line-indicator small"></span>Manali -
+                                        Himachal Pradesh</span>
+                                    <h3 class="card-title">ROHTANG<br>PASS</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="card" data-index="2"
+                            style="background-image: url('https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?ixlib=rb-4.0.3&w=400&q=80');">
+                            <div class="card-overlay">
+                                <div class="card-content">
+                                    <span class="card-subtitle"><span class="line-indicator small"></span>Goa -
+                                        India</span>
+                                    <h3 class="card-title">PALOLEM<br>BEACH</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="card" data-index="3"
+                            style="background-image: url('https://images.unsplash.com/photo-1477587458883-47145ed94245?ixlib=rb-4.0.3&w=400&q=80');">
+                            <div class="card-overlay">
+                                <div class="card-content">
+                                    <span class="card-subtitle"><span class="line-indicator small"></span>Jaipur -
+                                        Rajasthan</span>
+                                    <h3 class="card-title">HAWA<br>MAHAL</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 5 -->
+                        <div class="card" data-index="4"
+                            style="background-image: url('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?ixlib=rb-4.0.3&w=400&q=80');">
+                            <div class="card-overlay">
+                                <div class="card-content">
+                                    <span class="card-subtitle"><span class="line-indicator small"></span>Kerala -
+                                        India</span>
+                                    <h3 class="card-title">MUNNAR<br>VALLEY</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer / Slider controls -->
+            <footer>
+                <div class="footer-left">
+                    <div class="slider-controls">
+                        <button class="nav-arrow" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+
+                    <div class="slide-numbering" id="slideNumber">
+                        01
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </section>
+
+
+
+    <audio id="bgMusic" loop src="raindance.mp3"></audio>
+    <script src="script.js"></script>
+    <script src="auth_check.js"></script>
+</body>
+
+</html>

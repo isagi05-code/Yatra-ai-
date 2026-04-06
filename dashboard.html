@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yatra.AI - Chat History</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            display: flex;
+            gap: 16px;
+            margin: 90px auto 24px auto;
+            width: 90%;
+            max-width: 1400px;
+        }
+        .stat-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 22px 28px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        }
+        .stat-card:hover { transform: translateY(-4px); border-color: rgba(247,160,44,0.7); background: rgba(255, 255, 255, 0.18); box-shadow: 0 20px 50px rgba(247,160,44,0.25); }
+        .stat-icon {
+            width: 54px; height: 54px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .stat-icon.orange { background: rgba(247,160,44,0.4); color: #ffb732; }
+        .stat-icon.blue   { background: rgba(96,165,250,0.4); color: #93c5fd; }
+        .stat-icon.green  { background: rgba(74,222,128,0.4); color: #86efac; }
+        .stat-label { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: #e4e4e7; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 4px; }
+        .stat-value { font-family: 'Oswald', sans-serif; font-size: 2.6rem; color: #ffffff; line-height: 1; }
+
+        /* ===== MAIN CONTAINER ===== */
+        .dashboard-container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto 60px auto;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 32px 80px rgba(0,0,0,0.3);
+        }
+
+        /* ===== HEADER ===== */
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 26px 32px;
+            border-bottom: 1px solid rgba(255,255,255,0.18);
+            background: linear-gradient(90deg, rgba(247,160,44,0.2), rgba(247,100,12,0.08) 60%, transparent);
+        }
+        .dash-header-left { display: flex; align-items: center; gap: 14px; }
+        .dash-header-icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, #f7a02c, #e05a0c);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; color: #fff;
+        }
+        .dash-title { font-family: 'Oswald', sans-serif; font-size: 1.7rem; letter-spacing: 2px; color: #ffffff; margin: 0; }
+        .dash-subtitle { font-family: 'Inter', sans-serif; font-size: 0.78rem; color: #a1a1aa; margin: 2px 0 0 0; }
+
+        .refresh-btn {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(247,160,44,0.1);
+            border: 1px solid rgba(247,160,44,0.3);
+            color: #f7a02c;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem; font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+        .refresh-btn:hover {
+            background: rgba(247,160,44,0.2);
+            border-color: #f7a02c;
+            transform: translateY(-1px);
+        }
+        .refresh-btn i { transition: transform 0.5s ease; }
+        .refresh-btn:hover i { transform: rotate(180deg); }
+
+        /* ===== TABLE ===== */
+        .table-wrap { overflow-x: auto; }
+        table {
+            width: 100%; border-collapse: collapse;
+            font-family: 'Inter', sans-serif; font-size: 0.88rem;
+        }
+        thead tr {
+            background: rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.18);
+        }
+        th {
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #e4e4e7;
+        }
+        tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            transition: background 0.25s ease;
+            animation: fadeSlideIn 0.4s ease forwards;
+            opacity: 0;
+        }
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        tbody tr:hover { background: rgba(247,160,44,0.1); }
+        td { padding: 18px 20px; vertical-align: middle; color: #f4f4f5; }
+
+        /* ===== ID CHIP ===== */
+        .id-chip {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 8px;
+            width: 36px; height: 36px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.95rem; color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* ===== TIMESTAMP ===== */
+        .ts-wrap { display: flex; flex-direction: column; gap: 2px; }
+        .ts-date { font-size: 0.82rem; color: #a1a1aa; }
+        .ts-time { font-size: 0.72rem; color: #52525b; }
+
+        /* ===== BADGES ===== */
+        .badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 0.8px; text-transform: uppercase;
+        }
+        .badge-itinerary { background: rgba(249,115,22,0.2); color: #fdba74; border: 1px solid rgba(249,115,22,0.4); }
+        .badge-companion  { background: rgba(96,165,250,0.2); color: #93c5fd; border: 1px solid rgba(96,165,250,0.4); }
+        .badge-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .badge-itinerary .badge-dot { background: #fb923c; }
+        .badge-companion  .badge-dot { background: #60a5fa; }
+
+        /* ===== USER PROMPT ===== */
+        .prompt-text {
+            font-weight: 600; color: #ffffff;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ===== SNIPPET ===== */
+        .snippet-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: #e4e4e7;
+            line-height: 1.6;
+            max-height: 80px;
+            overflow: hidden;
+            position: relative;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        /* ===== CONTINUE BUTTON ===== */
+        @keyframes pulse-glow {
+            0%   { box-shadow: 0 0 0 0 rgba(247,160,44,0.6); }
+            70%  { box-shadow: 0 0 0 8px rgba(247,160,44,0); }
+            100% { box-shadow: 0 0 0 0 rgba(247,160,44,0); }
+        }
+        @keyframes shimmer {
+            0%   { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .continue-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            color: #111;
+            background: linear-gradient(90deg, #f7a02c, #f76b0c, #f7a02c);
+            background-size: 200% auto;
+            animation: pulse-glow 2s infinite, shimmer 3s linear infinite;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .continue-btn::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        .continue-btn:hover::before { transform: translateX(100%); }
+        .continue-btn:hover {
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 8px 24px rgba(247,160,44,0.5);
+            animation: none;
+        }
+        .continue-btn i { font-size: 0.85rem; }
+
+        /* ===== DELETE BUTTON ===== */
+        .delete-btn {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 10px;
+            padding: 9px 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+        }
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.9);
+            color: #fff;
+            border-color: #ef4444;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            padding: 80px 20px;
+            text-align: center;
+            color: #52525b;
+        }
+        .empty-state i { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; }
+        .empty-state p { font-family: 'Inter', sans-serif; font-size: 1rem; }
+
+        /* ===== ERROR STATE ===== */
+        .error-state { color: #f87171; padding: 60px; text-align: center; }
+    </style>
+</head>
+
+<body class="chat-page-body" style="background-color: #000000;">
+    <div class="bg-layer active" style="background-color: #000000;"></div>
+    <div class="bg-gradient-overlay" style="display: none;"></div>
+
+    <div class="container chat-container" style="display: block; position: relative;">
+        <header>
+            <div class="logo">
+                <img src="yatralogo.jpg" alt="Yatra.AI Logo" class="brand-logo">
+                <span>Yatra.AI</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/index.html">HOME</a></li>
+                    <li><a href="/holidays.html">HOLIDAYS</a></li>
+                    <li><a href="/chat.html">AI AGENT</a></li>
+                    <li><a href="/companion.html">TRAVEL COMPANION</a></li>
+                    <li><a href="/dashboard.html" class="active">CHAT HISTORY</a></li>
+                </ul>
+            </nav>
+            <div class="nav-icons">
+                <button class="icon-btn search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <a href="/signin.html"><button class="icon-btn user-btn"><i class="fa-solid fa-user"></i></button></a>
+            </div>
+        </header>
+
+        <!-- Stats Bar -->
+    <div class="stats-bar" id="statsBar" style="display:none;">
+        <div class="stat-card">
+            <div class="stat-icon orange"><i class="fa-solid fa-comments"></i></div>
+            <div>
+                <div class="stat-label">Total Chats</div>
+                <div class="stat-value" id="statTotal">0</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fa-solid fa-robot"></i></div>
+            <div>
+                <div class="stat-label">Companion Chats</div>
+                <div class="stat-value" id="statCompanion">0</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fa-solid fa-map"></i></div>
+            <div>
+                <div class="stat-label">Itineraries Made</div>
+                <div class="stat-value" id="statItinerary">0</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div class="dashboard-container">
+        <div class="dash-header">
+            <div class="dash-header-left">
+                <div class="dash-header-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <div>
+                    <h1 class="dash-title">CHAT HISTORY</h1>
+                    <p class="dash-subtitle">All your AI conversations in one place</p>
+                </div>
+            </div>
+            <button class="refresh-btn" onclick="fetchLogs()">
+                <i class="fa-solid fa-rotate-right"></i> Refresh
+            </button>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th width="4%">#</th>
+                        <th width="14%">Date & Time</th>
+                        <th width="10%">AI Type</th>
+                        <th width="22%">User Prompt</th>
+                        <th width="40%">Bot Response</th>
+                        <th width="10%">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="logsTableBody">
+                    <tr>
+                        <td colspan="6" class="empty-state">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            <p>Loading your conversations...</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        async function fetchLogs() {
+            const tableBody = document.getElementById('logsTableBody');
+            tableBody.innerHTML = `<tr><td colspan="6" class="empty-state">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;margin-bottom:12px;opacity:0.5;"></i>
+                <p>Loading conversations...</p></td></tr>`;
+
+            try {
+                const userStr = localStorage.getItem('yatraUser');
+                if (!userStr) {
+                    document.getElementById('statsBar').style.display = 'none';
+                    tableBody.innerHTML = `<tr><td colspan="6" class="empty-state">
+                        <i class="fa-solid fa-lock" style="font-size:2rem;margin-bottom:12px;color:rgba(247,160,44,0.5);"></i>
+                        <p style="font-size: 1.1rem; color: #a1a1aa;">Please <a href="/signin.html" style="color: #f7a02c; text-decoration: underline;">log in</a> to view your chat history.</p></td></tr>`;
+                    return;
+                }
+                
+                const user = JSON.parse(userStr);
+                const response = await fetch(`/api/logs?user_id=${user.id}`);
+                const logs = await response.json();
+
+                tableBody.innerHTML = '';
+
+                if (logs.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="6" class="empty-state">
+                        <i class="fa-solid fa-comment-slash"></i>
+                        <p>No conversations yet. Start chatting with one of the bots!</p></td></tr>`;
+                    return;
+                }
+
+                // Update stats
+                const companionCount = logs.filter(l => l.ai_type === 'Companion').length;
+                const itineraryCount = logs.filter(l => l.ai_type === 'Itinerary').length;
+                document.getElementById('statTotal').textContent = logs.length;
+                document.getElementById('statCompanion').textContent = companionCount;
+                document.getElementById('statItinerary').textContent = itineraryCount;
+                document.getElementById('statsBar').style.display = 'flex';
+
+                logs.forEach((log, index) => {
+                    const row = document.createElement('tr');
+                    row.style.animationDelay = `${index * 0.05}s`;
+
+                    const date = new Date(log.timestamp);
+                    const dateStr = date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+                    const timeStr = date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+                    const isCompanion = log.ai_type === 'Companion';
+                    const badgeClass = isCompanion ? 'badge-companion' : 'badge-itinerary';
+                    const badgeIcon = isCompanion ? 'fa-robot' : 'fa-map-location-dot';
+
+                    let displayResponse = log.bot_response;
+                    try {
+                        const parsed = JSON.parse(log.bot_response);
+                        if (parsed && parsed.reply) displayResponse = parsed.reply;
+                    } catch (e) {}
+
+                    row.innerHTML = `
+                        <td><div class="id-chip">${log.id}</div></td>
+                        <td>
+                            <div class="ts-wrap">
+                                <span class="ts-date">${dateStr}</span>
+                                <span class="ts-time">${timeStr}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge ${badgeClass}">
+                                <span class="badge-dot"></span>
+                                <i class="fa-solid ${badgeIcon}"></i>
+                                ${log.ai_type}
+                            </span>
+                        </td>
+                        <td><div class="prompt-text">${log.user_message}</div></td>
+                        <td><div class="snippet-box">${displayResponse}</div></td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <a href="/companion.html?resume_id=${log.id}" class="continue-btn">
+                                    <i class="fa-solid fa-arrow-right"></i> Continue
+                                </a>
+                                <button class="delete-btn" onclick="deleteLog(${log.id})" title="Delete Chat">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching logs:", error);
+                tableBody.innerHTML = `<tr><td colspan="6" class="error-state">
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;margin-bottom:12px;"></i>
+                    <p>Failed to connect. Make sure <strong>app.py</strong> is running on port 5001.</p></td></tr>`;
+            }
+        }
+
+        async function deleteLog(logId) {
+            if (!confirm("Are you sure you want to delete this chat history? This cannot be undone.")) return;
+            
+            try {
+                const response = await fetch(`/api/logs/${logId}`, {
+                    method: 'DELETE'
+                });
+                const result = await response.json();
+                
+                if (response.ok) {
+                    fetchLogs(); // Reload data
+                } else {
+                    alert("Error deleting log: " + (result.error || "Unknown error"));
+                }
+            } catch (error) {
+                console.error("Error deleting log:", error);
+                alert("Failed to connect to the server. Is app.py running?");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchLogs);
+    </script>
+    <script src="auth_check.js"></script>
+</body>
+</html>

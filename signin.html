@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yatra.AI - Log In</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Oswald:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body class="auth-page-body">
+
+    <div class="auth-container">
+        <!-- Left Side: Theme Graphic & Steps -->
+        <div class="auth-left">
+            <!-- Smooth Slideshow Background -->
+            <div class="auth-slideshow">
+                <div class="auth-slide"
+                    style="background-image: url('https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'); animation-delay: 0s;">
+                </div>
+                <div class="auth-slide"
+                    style="background-image: url('https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'); animation-delay: 4s;">
+                </div>
+                <div class="auth-slide" style="background-image: url('kashmir.jpg'); animation-delay: 8s;"></div>
+                <div class="auth-slide"
+                    style="background-image: url('https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'); animation-delay: 12s;">
+                </div>
+            </div>
+
+            <!-- Dark gradient overlay to make text readable -->
+            <div class="auth-bg-overlay"></div>
+
+            <div class="auth-left-content">
+                <a href="/" class="logo auth-logo"
+                    style="color: white; text-decoration: none; margin-bottom: auto; display: inline-flex; width: fit-content; align-items: center; gap: 0.75rem;">
+                    <img src="yatralogo.jpg" alt="Yatra Logo"
+                        style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color);">
+                    YATRA.AI
+                </a>
+
+                <div class="auth-hero-text">
+                    <h1>Get Started<br>with Us</h1>
+                    <p>Complete these easy steps<br>to register your account.</p>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- Right Side: Form -->
+        <div class="auth-right">
+            <div class="auth-form-wrapper">
+                <div class="auth-form-header">
+                    <h2>Welcome to Yatra.AI</h2>
+                    <p>Securely log in or sign up using your Google Account.</p>
+                </div>
+
+                <div class="social-auth-btns" style="display: flex; justify-content: center; margin-top: 2rem;">
+                    <!-- Google Identity Services Container -->
+                    <div id="g_id_onload"
+                        data-client_id="250570628666-sk264agni60kpmnuisi8jqqbefm3l5mh.apps.googleusercontent.com"
+                        data-context="signin"
+                        data-ux_mode="popup"
+                        data-callback="handleCredentialResponse"
+                        data-auto_prompt="false">
+                    </div>
+
+                    <div class="g_id_signin"
+                        data-type="standard"
+                        data-shape="pill"
+                        data-theme="outline"
+                        data-text="signin_with"
+                        data-size="large"
+                        data-logo_alignment="left">
+                    </div>
+                </div>
+
+                <div class="auth-divider" style="margin-top: 3rem;">
+                    <span>Authenticated via Google</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Handle Google Auth Response -->
+    <script>
+        async function handleCredentialResponse(response) {
+            try {
+                // Inform user logging in visually
+                document.querySelector('.auth-form-header h2').innerText = "Authenticating...";
+                
+                // Send the JWT to the backend
+                const res = await fetch('/api/auth/google', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ credential: response.credential })
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    // Store user payload locally
+                    localStorage.setItem('yatraUser', JSON.stringify(data.user));
+                    
+                    // Redirect to home dashboard seamlessly
+                    document.querySelector('.auth-form-header h2').innerText = "Logged In Successfully!";
+                    setTimeout(() => {
+                        window.location.href = '/index.html';
+                    }, 600);
+                } else {
+                    alert("Authentication Failed: " + data.error);
+                }
+            } catch (error) {
+                console.error("Login Error:", error);
+                alert("Failed to reach authentication server. Is app.py running?");
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yatra.AI - Premium Holidays</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Oswald:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="holidays-page-body">
+
+    <!-- Navigation Bar inside container to keep widths consistent -->
+    <div class="container nav-container"
+        style="position: absolute; top: 0; left: 0; right: 0; z-index: 100; height: auto;">
+        <header>
+            <div class="logo">
+                <a href="/"
+                    style="color: white; text-decoration: none; display: flex; align-items: center; gap: 0.75rem;">
+                    <img src="yatralogo.jpg" alt="Yatra Logo"
+                        style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary-color); object-fit: cover;">
+                    <span>Yatra.AI</span>
+                </a>
+            </div>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/index.html">HOME</a></li>
+                    <li><a href="/holidays.html" class="active">HOLIDAYS</a></li>
+                    <li><a href="/chat.html">AI AGENT</a></li>
+                    <li><a href="/companion.html">TRAVEL COMPANION</a></li>
+                    <li><a href="/dashboard.html">CHAT HISTORY</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-icons">
+                <button class="icon-btn search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <a href="/signin.html"><button class="icon-btn user-btn"><i class="fa-solid fa-user"></i></button></a>
+            </div>
+        </header>
+    </div>
+
+    <!-- Animative Photo Opening / Hero -->
+    <section class="holidays-hero">
+        <div class="holidays-hero-bg"></div>
+        <div class="bg-gradient-overlay"></div>
+        <div class="holidays-hero-content">
+            <span class="hero-label fade-up" style="animation-delay: 0.2s;">Discover The World</span>
+            <h1 class="fade-up" style="animation-delay: 0.4s;">Extraordinary <br><span
+                    class="highlight-text">Holidays</span></h1>
+            <p class="fade-up" style="animation-delay: 0.6s;">Curated experiences and premium packages across
+                India.<br>Your perfect escape starts here.</p>
+            <button class="btn-discover fade-up" style="animation-delay: 0.8s; margin-top: 2rem;"
+                onclick="document.getElementById('holiday-packages').scrollIntoView({behavior: 'smooth'})">EXPLORE
+                PLACES <i class="fa-solid fa-arrow-down" style="margin-left: 0.5rem;"></i></button>
+        </div>
+    </section>
+
+    <!-- Holidays Grid Section -->
+    <section id="holiday-packages" class="holidays-section standalone-holidays">
+        <div class="section-header fade-up">
+            <h2>Popular Holidays</h2>
+            <p>Our top recommended Indian Packages</p>
+        </div>
+        <div class="holidays-grid">
+
+            <div class="holiday-card">
+                <div class="holiday-img">
+
+                    <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80" alt="Goa">
+                </div>
+                <div class="holiday-info">
+                    <h3>Goa</h3>
+                    <p>4 Days / 3 Nights. Includes beach side resort, breakfast, and airport transfers.</p>
+                    <button class="btn-book" onclick="window.location.href='/chat.html'">Make Trip</button>
+                </div>
+            </div>
+
+            <div class="holiday-card">
+                <div class="holiday-img">
+
+                    <img src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600&q=80" alt="Manali">
+                </div>
+                <div class="holiday-info">
+                    <h3>Manali</h3>
+                    <p>5 Days / 4 Nights. Includes snow point visit, hotel stay, and local sightseeing.</p>
+                    <button class="btn-book" onclick="window.location.href='/chat.html'">Make Trip</button>
+                </div>
+            </div>
+
+            <div class="holiday-card">
+                <div class="holiday-img">
+
+                    <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=600&q=80" alt="Kerala">
+                </div>
+                <div class="holiday-info">
+                    <h3>Kerala</h3>
+                    <p>5 Days / 4 Nights. Backwaters houseboat stay, Munnar hills, and spice gardens.</p>
+                    <button class="btn-book" onclick="window.location.href='/chat.html'">Make Trip</button>
+                </div>
+            </div>
+
+            <div class="holiday-card">
+                <div class="holiday-img">
+
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80"
+                        alt="Andaman Islands">
+                </div>
+                <div class="holiday-info">
+                    <h3>Andaman Islands</h3>
+                    <p>6 Days / 5 Nights. Scuba diving, Havelock Island, and pristine beaches.</p>
+                    <button class="btn-book" onclick="window.location.href='/chat.html'">Make Trip</button>
+                </div>
+            </div>
+
+            <div class="holiday-card">
+                <div class="holiday-img">
+
+                    <img src="https://images.unsplash.com/photo-1477587458883-47145ed94245?w=600&q=80" alt="Jaipur">
+                </div>
+                <div class="holiday-info">
+                    <h3>Jaipur</h3>
+                    <p>3 Days / 2 Nights. Royal palaces, cultural tours, and heritage hotel stay.</p>
+                    <button class="btn-book" onclick="window.location.href='/chat.html'">Make Trip</button>
+                </div>
+            </div>
+
+            <div class="holiday-card">
+                <div class="holiday-img">
+
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80" alt="Ladakh">
+                </div>
+                <div class="holiday-info">
+                    <h3>Ladakh</h3>
+                    <p>7 Days / 6 Nights. Pangong Lake, Nubra Valley, and high altitude passes.</p>
+                    <button class="btn-book" onclick="window.location.href='/chat.html'">Make Trip</button>
+                </div>
+            </div>
+
+            <div class="holiday-card">
+                <div class="holiday-img">
+
+                    <img src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=600&q=80" alt="Darjeeling">
+                </div>
+                <div class="holiday-info">
+                    <h3>Darjeeling</h3>
+                    <p>4 Days / 3 Nights. Tea gardens, Tiger Hill sunrise, and toy train ride.</p>
+                    <button class="btn-book" onclick="window.location.href='/chat.html'">Make Trip</button>
+                </div>
+            </div>
+
+            <div class="holiday-card">
+                <div class="holiday-img">
+
+                    <img src="udaipur.jpg" alt="Udaipur">
+                </div>
+                <div class="holiday-info">
+                    <h3>Udaipur</h3>
+                    <p>3 Days / 2 Nights. City of lakes, boat riding, and grand palace tours.</p>
+                    <button class="btn-book" onclick="window.location.href='/chat.html'">Make Trip</button>
+                </div>
+            </div>
+
+            <div class="holiday-card">
+                <div class="holiday-img">
+
+                    <img src="kashmir.jpg" alt="Kashmir">
+                </div>
+                <div class="holiday-info">
+                    <h3>Kashmir</h3>
+                    <p>6 Days / 5 Nights. Shikara ride in Dal Lake, Gulmarg gondola, and Pahalgam.</p>
+                    <button class="btn-book" onclick="window.location.href='/chat.html'">Make Trip</button>
+                </div>
+            </div>
+
+            <div class="holiday-card">
+                <div class="holiday-img">
+
+                    <img src="varanasi.jpg" alt="Varanasi">
+                </div>
+                <div class="holiday-info">
+                    <h3>Varanasi</h3>
+                    <p>3 Days / 2 Nights. Ganga Aarti evening, ancient temples, and spiritual walk.</p>
+                    <button class="btn-book" onclick="window.location.href='/chat.html'">Make Trip</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer Script for Scroll Animation -->
+    <script>
+        // Simple intersection observer to animate packages as you scroll
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const cardIndex = Array.from(document.querySelectorAll('.holiday-card')).indexOf(entry.target);
+                    const delay = (cardIndex % 4) * 100; // stagger 0, 100, 200, 300 ms for rows
+                    setTimeout(() => {
+                        entry.target.classList.add('show');
+                    }, delay);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.holiday-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+    <script src="auth_check.js"></script>
+</body>
+
+</html>

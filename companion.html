@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yatra.AI - 24/7 Travel Companion</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Custom formatting for markdown elements inside bot reply */
+        .msg-content p { margin-bottom: 0.5rem; }
+        .msg-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 0.5rem; }
+        .msg-content li { margin-bottom: 0.2rem; }
+        .msg-content h3 { font-size: 1.1rem; font-weight: bold; margin-bottom: 0.5rem; color: #fff; }
+        .msg-content h4 { font-size: 1rem; font-weight: bold; margin-bottom: 0.3rem; color: rgba(255,255,255,0.9); }
+        .msg-content strong { color: #f7a02c; }
+        .msg-content a { color: #3b82f6; text-decoration: underline; }
+    </style>
+</head>
+
+<body class="chat-page-body">
+
+    <!-- Background Layer -->
+    <div class="bg-layer active"
+        style="background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'); filter: blur(8px) brightness(0.25);">
+    </div>
+    <div class="bg-gradient-overlay" style="background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.7));">
+    </div>
+
+    <div class="container chat-container">
+        <!-- Header / Navigation -->
+        <header>
+            <div class="logo">
+                <img src="yatralogo.jpg" alt="Yatra.AI Logo" class="brand-logo">
+                <span>Yatra.AI</span>
+            </div>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/index.html">HOME</a></li>
+                    <li><a href="/holidays.html">HOLIDAYS</a></li>
+                    <li><a href="/chat.html">AI AGENT</a></li>
+                    <li><a href="/companion.html" class="active">TRAVEL COMPANION</a></li>
+                    <li><a href="/dashboard.html">CHAT HISTORY</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-icons">
+                <button class="icon-btn search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <a href="/signin.html"><button class="icon-btn user-btn"><i class="fa-solid fa-user"></i></button></a>
+            </div>
+        </header>
+
+        <!-- Main Chat UI -->
+        <main class="chat-main modern-ai-layout">
+            <div class="chat-wrapper">
+
+                <div class="top-actions" style="justify-content: center; padding-top: 10px;">
+                    <span style="color: #f7a02c; font-family: 'Oswald', sans-serif; letter-spacing: 2px;">24/7 TRAVEL COMPANION</span>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                    <div class="empty-state-greeting" id="emptyStateGreeting">
+                        <div class="hero-logo-sphere" style="animation: pulse 2s infinite;">
+                            <img src="yatralogo.jpg" alt="Yatra Logo">
+                        </div>
+                        <h1 class="hero-greeting" style="font-size: 2.5rem; margin-top: 20px;">ON-THE-GO ASSISTANCE</h1>
+                        <h2 class="hero-subgreeting">Need a quick recommendation, a budget check, or nearby cafe? Type below!</h2>
+                    </div>
+                </div>
+
+                <div class="chat-bottom-section">
+                    <div class="chat-input-wrapper">
+                        <button class="icon-btn attachment-btn"><i class="fa-solid fa-paperclip"></i></button>
+                        <input type="text" id="chatInput" placeholder="Ask your companion..." autocomplete="off">
+                        <button class="icon-btn voice-btn"><i class="fa-solid fa-microphone"></i></button>
+                        <button class="premium-btn action-btn text-white" id="sendBtn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="companion.js"></script>
+    <script src="auth_check.js"></script>
+</body>
+
+</html>
