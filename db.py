@@ -6,39 +6,42 @@ import json
 DB_PATH = os.path.join(os.path.dirname(__file__), 'yatra_data.db')
 
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    # Create table if it doesn't exist
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS chat_history (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT,
-            ai_type TEXT,
-            user_message TEXT,
-            bot_response TEXT,
-            user_id INTEGER DEFAULT NULL
-        )
-    ''')
-    
-    # Safely try to add user_id column if the table was created previously without it
     try:
-        cursor.execute('ALTER TABLE chat_history ADD COLUMN user_id INTEGER DEFAULT NULL')
-    except sqlite3.OperationalError:
-        pass # Column already exists
-    
-    
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            google_id TEXT UNIQUE,
-            name TEXT,
-            email TEXT UNIQUE,
-            picture_url TEXT,
-            created_at TEXT
-        )
-    ''')
-    conn.commit()
-    conn.close()
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        # Create table if it doesn't exist
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS chat_history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT,
+                ai_type TEXT,
+                user_message TEXT,
+                bot_response TEXT,
+                user_id INTEGER DEFAULT NULL
+            )
+        ''')
+        
+        # Safely try to add user_id column if the table was created previously without it
+        try:
+            cursor.execute('ALTER TABLE chat_history ADD COLUMN user_id INTEGER DEFAULT NULL')
+        except sqlite3.OperationalError:
+            pass # Column already exists
+        
+        
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                google_id TEXT UNIQUE,
+                name TEXT,
+                email TEXT UNIQUE,
+                picture_url TEXT,
+                created_at TEXT
+            )
+        ''')
+        conn.commit()
+        conn.close()
+    except sqlite3.OperationalError as e:
+        print(f"Skipping DB initialization (likely on read-only serverless environment like Vercel): {e}")
 
 def log_interaction(ai_type, user_message, bot_response, user_id=None):
     """
