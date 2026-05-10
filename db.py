@@ -16,6 +16,15 @@ DB_CONFIG = {
     'database': os.getenv('MYSQL_DATABASE', 'yatra_ai'),
 }
 
+# Aiven and other cloud MySQL providers require SSL
+if os.getenv('MYSQL_SSL', '').lower() == 'true':
+    import ssl
+    ssl_context = ssl.create_default_context()
+    ssl_context.check_hostname = False
+    ssl_context.verify_mode = ssl.CERT_NONE
+    DB_CONFIG['ssl_disabled'] = False
+    DB_CONFIG['tls_versions'] = ['TLSv1.2', 'TLSv1.3']
+
 # Connection pool for better performance
 connection_pool = None
 
@@ -26,7 +35,7 @@ def get_connection():
         if connection_pool is None:
             connection_pool = pooling.MySQLConnectionPool(
                 pool_name="yatra_pool",
-                pool_size=5,
+                pool_size=2,
                 pool_reset_session=True,
                 **DB_CONFIG
             )
@@ -39,16 +48,8 @@ def get_connection():
 def init_db():
     """Initialize the MySQL database and create tables if they don't exist."""
     try:
-        # First connect WITHOUT specifying a database to create it
-        init_config = DB_CONFIG.copy()
-        db_name = init_config.pop('database')
-        
-        conn = mysql.connector.connect(**init_config)
+        conn = mysql.connector.connect(**DB_CONFIG)
         cursor = conn.cursor()
-        
-        # Create database if it doesn't exist
-        cursor.execute(f"CREATE DATABASE IF NOT EXISTS `{db_name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
-        cursor.execute(f"USE `{db_name}`")
         
         # Create chat_history table
         cursor.execute('''
