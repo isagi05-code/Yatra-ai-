@@ -140,14 +140,7 @@ def get_logs():
         if not user_id:
             return jsonify([])
             
-        import sqlite3
-        conn = sqlite3.connect('yatra_data.db')
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM chat_history WHERE user_id = ? ORDER BY timestamp DESC", (user_id,))
-        rows = cursor.fetchall()
-        data = [dict(row) for row in rows]
-        conn.close()
+        data = db.get_logs(user_id)
         return jsonify(data)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -155,15 +148,9 @@ def get_logs():
 @app.route('/api/logs/<int:log_id>', methods=['GET'])
 def get_log(log_id):
     try:
-        import sqlite3
-        conn = sqlite3.connect('yatra_data.db')
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM chat_history WHERE id = ?", (log_id,))
-        row = cursor.fetchone()
-        conn.close()
+        row = db.get_log(log_id)
         if row:
-            return jsonify(dict(row))
+            return jsonify(row)
         return jsonify({"error": "Not Found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -171,15 +158,9 @@ def get_log(log_id):
 @app.route('/api/logs/<int:log_id>', methods=['DELETE'])
 def delete_log(log_id):
     try:
-        import sqlite3
-        conn = sqlite3.connect('yatra_data.db')
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM chat_history WHERE id = ?", (log_id,))
-        rows_affected = cursor.rowcount
-        conn.commit()
-        conn.close()
+        deleted = db.delete_log(log_id)
         
-        if rows_affected > 0:
+        if deleted:
             return jsonify({"success": True, "message": "Log deleted successfully"})
         return jsonify({"error": "Log not found"}), 404
     except Exception as e:

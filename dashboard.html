@@ -271,11 +271,11 @@
     </style>
 </head>
 
-<body class="chat-page-body" style="background-color: #000000;">
+<body class="chat-page-body" style="background-color: #000000; overflow-y: auto;">
     <div class="bg-layer active" style="background-color: #000000;"></div>
     <div class="bg-gradient-overlay" style="display: none;"></div>
 
-    <div class="container chat-container" style="display: block; position: relative;">
+    <div class="container chat-container" style="display: block; position: relative; height: auto; min-height: 100vh;">
         <header>
             <div class="logo">
                 <img src="yatralogo.jpg" alt="Yatra.AI Logo" class="brand-logo">
@@ -340,17 +340,16 @@
             <table>
                 <thead>
                     <tr>
-                        <th width="4%">#</th>
                         <th width="14%">Date & Time</th>
                         <th width="10%">AI Type</th>
-                        <th width="22%">User Prompt</th>
+                        <th width="24%">User Prompt</th>
                         <th width="40%">Bot Response</th>
-                        <th width="10%">Action</th>
+                        <th width="12%">Action</th>
                     </tr>
                 </thead>
                 <tbody id="logsTableBody">
                     <tr>
-                        <td colspan="6" class="empty-state">
+                        <td colspan="5" class="empty-state">
                             <i class="fa-solid fa-spinner fa-spin"></i>
                             <p>Loading your conversations...</p>
                         </td>
@@ -364,7 +363,7 @@
     <script>
         async function fetchLogs() {
             const tableBody = document.getElementById('logsTableBody');
-            tableBody.innerHTML = `<tr><td colspan="6" class="empty-state">
+            tableBody.innerHTML = `<tr><td colspan="5" class="empty-state">
                 <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;margin-bottom:12px;opacity:0.5;"></i>
                 <p>Loading conversations...</p></td></tr>`;
 
@@ -372,7 +371,7 @@
                 const userStr = localStorage.getItem('yatraUser');
                 if (!userStr) {
                     document.getElementById('statsBar').style.display = 'none';
-                    tableBody.innerHTML = `<tr><td colspan="6" class="empty-state">
+                    tableBody.innerHTML = `<tr><td colspan="5" class="empty-state">
                         <i class="fa-solid fa-lock" style="font-size:2rem;margin-bottom:12px;color:rgba(247,160,44,0.5);"></i>
                         <p style="font-size: 1.1rem; color: #a1a1aa;">Please <a href="/signin.html" style="color: #f7a02c; text-decoration: underline;">log in</a> to view your chat history.</p></td></tr>`;
                     return;
@@ -385,7 +384,7 @@
                 tableBody.innerHTML = '';
 
                 if (logs.length === 0) {
-                    tableBody.innerHTML = `<tr><td colspan="6" class="empty-state">
+                    tableBody.innerHTML = `<tr><td colspan="5" class="empty-state">
                         <i class="fa-solid fa-comment-slash"></i>
                         <p>No conversations yet. Start chatting with one of the bots!</p></td></tr>`;
                     return;
@@ -418,7 +417,6 @@
                     } catch (e) {}
 
                     row.innerHTML = `
-                        <td><div class="id-chip">${log.id}</div></td>
                         <td>
                             <div class="ts-wrap">
                                 <span class="ts-date">${dateStr}</span>
@@ -449,7 +447,7 @@
                 });
             } catch (error) {
                 console.error("Error fetching logs:", error);
-                tableBody.innerHTML = `<tr><td colspan="6" class="error-state">
+                tableBody.innerHTML = `<tr><td colspan="5" class="error-state">
                     <i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;margin-bottom:12px;"></i>
                     <p>Failed to connect. Make sure <strong>app.py</strong> is running on port 5001.</p></td></tr>`;
             }
