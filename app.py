@@ -141,7 +141,9 @@ def get_logs():
             return jsonify([])
             
         data = db.get_logs(user_id)
-        return jsonify(data)
+        response = jsonify(data)
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        return response
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -164,7 +166,8 @@ def delete_log(log_id):
             return jsonify({"success": True, "message": "Log deleted successfully"})
         return jsonify({"error": "Log not found"}), 404
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print(f"Exception in delete_log: {e}")
+        return jsonify({"error": f"Database Error: {str(e)}"}), 500
 
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests

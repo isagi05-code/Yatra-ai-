@@ -39,10 +39,14 @@ def get_connection():
                 pool_reset_session=True,
                 **DB_CONFIG
             )
-        return connection_pool.get_connection()
+        conn = connection_pool.get_connection()
+        conn.ping(reconnect=True, attempts=3, delay=1)
+        return conn
     except Exception:
         # Fallback to direct connection if pool fails
-        return mysql.connector.connect(**DB_CONFIG)
+        conn = mysql.connector.connect(**DB_CONFIG)
+        conn.ping(reconnect=True, attempts=3, delay=1)
+        return conn
 
 
 def init_db():
@@ -208,7 +212,7 @@ def delete_log(log_id):
         return rows_affected > 0
     except Exception as e:
         print(f"Database Error in delete_log: {e}")
-        return False
+        raise e
     finally:
         if conn and conn.is_connected():
             conn.close()
