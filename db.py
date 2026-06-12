@@ -222,7 +222,7 @@ def save_google_user(google_id, name, email, picture_url):
         return user_id
     except Exception as e:
         print(f"Database Error in save_google_user: {e}")
-        return None
+        raise e
     finally:
         close_connection(conn)
 

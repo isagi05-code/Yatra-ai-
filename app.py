@@ -244,6 +244,7 @@ def auth_google():
             
     except Exception as e:
         print(f"Auth error: {e}")
+        traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
