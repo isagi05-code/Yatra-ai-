@@ -133,12 +133,32 @@ def companion():
         traceback.print_exc()
         return jsonify({"reply": "Sorry, I'm having trouble connecting to the AI service."}), 500
 
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+
+GOOGLE_CLIENT_ID = "250570628666-sk264agni60kpmnuisi8jqqbefm3l5mh.apps.googleusercontent.com"
+
+def get_authenticated_user_id(req):
+    """Verifies JWT token and returns the internal user_id."""
+    auth_header = req.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        raise ValueError("Missing or invalid Authorization header")
+    token = auth_header.split(' ')[1]
+    idinfo = id_token.verify_oauth2_token(
+        token, 
+        google_requests.Request(), 
+        GOOGLE_CLIENT_ID
+    )
+    google_id = idinfo['sub']
+    user_id = db.get_user_id_by_google_id(google_id)
+    if not user_id:
+        raise ValueError("User not found in database")
+    return user_id
+
 @app.route('/api/logs', methods=['GET'])
 def get_logs():
     try:
-        user_id = request.args.get('user_id')
-        if not user_id:
-            return jsonify([])
+        user_id = get_authenticated_user_id(request)
             
         data = db.get_logs(user_id)
         response = jsonify(data)
@@ -160,6 +180,13 @@ def get_log(log_id):
 @app.route('/api/logs/<int:log_id>', methods=['DELETE'])
 def delete_log(log_id):
     try:
+        user_id = get_authenticated_user_id(request)
+        
+        # Security: verify log belongs to the authenticated user
+        log = db.get_log(log_id)
+        if not log or log['user_id'] != user_id:
+            return jsonify({"error": "Unauthorized or Log not found"}), 403
+            
         deleted = db.delete_log(log_id)
         
         if deleted:
@@ -169,10 +196,8 @@ def delete_log(log_id):
         print(f"Exception in delete_log: {e}")
         return jsonify({"error": f"Database Error: {str(e)}"}), 500
 
-from google.oauth2 import id_token
-from google.auth.transport import requests as google_requests
+# Google imports and client ID are now at the top of the file
 
-GOOGLE_CLIENT_ID = "250570628666-sk264agni60kpmnuisi8jqqbefm3l5mh.apps.googleusercontent.com"
 
 @app.route('/api/auth/google', methods=['POST'])
 def auth_google():

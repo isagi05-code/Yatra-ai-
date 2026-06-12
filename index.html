@@ -14,6 +14,7 @@
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="FlowingMenu.css">
 </head>
 
 <body>
@@ -175,13 +176,39 @@
                         01
                     </div>
                 </div>
+
+                <a href="#flowing-menu-section" class="scroll-down-btn">
+                    <span>SCROLL DOWN</span>
+                    <i class="fa-solid fa-arrow-down"></i>
+                </a>
             </footer>
         </div>
     </section>
 
-
+    <!-- Flowing Menu Section -->
+    <section id="flowing-menu-section" style="height: 700px; position: relative; background: #050505; padding-top: 60px;">
+        <h2 style="text-align: center; font-family: 'Oswald', 'Bebas Neue', sans-serif; font-size: 3rem; margin-bottom: 2rem; color: #f7a02c; letter-spacing: 2px;">DESTINATION JOURNEYS</h2>
+        <div id="flowing-menu-container" style="height: 500px;"></div>
+    </section>
 
     <audio id="bgMusic" loop src="raindance.mp3"></audio>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="FlowingMenu.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const demoItems = [
+              { link: '/holidays.html', text: 'Taj Mahal', image: 'https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&w=600&q=80' },
+              { link: '/holidays.html', text: 'Rohtang Pass', image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?ixlib=rb-4.0.3&w=600&q=80' },
+              { link: '/holidays.html', text: 'Palolem Beach', image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?ixlib=rb-4.0.3&w=600&q=80' },
+              { link: '/holidays.html', text: 'Hawa Mahal', image: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?ixlib=rb-4.0.3&w=600&q=80' },
+              { link: '/holidays.html', text: 'Munnar Valley', image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?ixlib=rb-4.0.3&w=600&q=80' }
+            ];
+            const container = document.getElementById('flowing-menu-container');
+            if (container) {
+                new FlowingMenu(container, demoItems);
+            }
+        });
+    </script>
     <script src="script.js"></script>
     <script src="auth_check.js"></script>
 </body>

@@ -108,6 +108,7 @@
                 if (data.success) {
                     // Store user payload locally
                     localStorage.setItem('yatraUser', JSON.stringify(data.user));
+                    localStorage.setItem('yatraToken', response.credential);
                     
                     // Redirect to home dashboard seamlessly
                     document.querySelector('.auth-form-header h2').innerText = "Logged In Successfully!";

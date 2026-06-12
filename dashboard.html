@@ -369,7 +369,8 @@
 
             try {
                 const userStr = localStorage.getItem('yatraUser');
-                if (!userStr) {
+                const token = localStorage.getItem('yatraToken');
+                if (!userStr || !token) {
                     document.getElementById('statsBar').style.display = 'none';
                     tableBody.innerHTML = `<tr><td colspan="5" class="empty-state">
                         <i class="fa-solid fa-lock" style="font-size:2rem;margin-bottom:12px;color:rgba(247,160,44,0.5);"></i>
@@ -378,7 +379,10 @@
                 }
                 
                 const user = JSON.parse(userStr);
-                const response = await fetch(`/api/logs?user_id=${user.id}`);
+                const response = await fetch(`/api/logs`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!response.ok) throw new Error('Unauthorized');
                 const logs = await response.json();
 
                 tableBody.innerHTML = '';
@@ -457,8 +461,10 @@
             if (!confirm("Are you sure you want to delete this chat history? This cannot be undone.")) return;
             
             try {
+                const token = localStorage.getItem('yatraToken');
                 const response = await fetch(`/api/logs/${logId}`, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const result = await response.json();
                 
