@@ -167,7 +167,7 @@ def get_logs():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/api/logs/<int:log_id>', methods=['GET'])
+@app.route('/api/logs/<log_id>', methods=['GET'])
 def get_log(log_id):
     try:
         row = db.get_log(log_id)
@@ -177,7 +177,7 @@ def get_log(log_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/api/logs/<int:log_id>', methods=['DELETE'])
+@app.route('/api/logs/<log_id>', methods=['DELETE'])
 def delete_log(log_id):
     try:
         user_id = get_authenticated_user_id(request)
